@@ -11,57 +11,87 @@ public class Main {
         String fileNavn = "tekstfil.txt";
 
 
-        StringBuilder stringBuilder1 =
-                new StringBuilder("hej med dig, jeg ville lige høre hvordan " +
-                        "det går med dig. det her ser sgu da fedt ud ");
+        String s = "hej med dig, jeg ville lige høre hvordan " +
+                        "det går med dig. det her ser sgu da fedt ud ";
 
 
+        StringBuilder stringBuilder = new StringBuilder(s);
 
-            skriv(stringBuilder1.toString(),fileNavn);
-
-
-
-        System.out.println(changeWord(stringBuilder1.toString(), "dig", "eder"));
-
-
-        String[] strings = splitString(stringBuilder1);
-
-        for (String s : strings) {
-            System.out.println(s);
-        }
-
-
-        System.out.println(maxWordIndex(strings));
-
-        System.out.println(strings[maxWordIndex(strings)]);
+//
+//            skriv(stringBuilder1.toString(),fileNavn);
+//
+//
+//
+//        System.out.println(changeWord(stringBuilder1.toString(), "dig", "eder"));
+//
+//
+//        String[] strings = splitString(stringBuilder1);
+//
+//        for (String s : strings) {
+//            System.out.println(s);
+//        }
+//
+//
+//        System.out.println(maxWordIndex(strings));
+//
+//        System.out.println(strings[maxWordIndex(strings)]);
 
         String konsonanter = "qwrtpsdfghjklzxcvbnm";
         String vokaler = "aeyuioåæø";
 
+//        s = udskiftOrdIStreng(s,"dig","palle");
 
+        System.out.println(s.contains("a"));
 
-//        String test = "nikolaj";
-//        StringBuilder testOrd = new StringBuilder(test);
-//        System.out.println(findeLetters(vokaler, "bibliotek"));
+        System.out.println(udskiftBogstaverSmart("bibbi", 'b', 'k'));
 
-        System.out.println(isOfLetterType(konsonanter, 'r'));
-
-        System.out.println(findeLettersOfTyoe(konsonanter, "bibliotek"));
 
     }
 
+
+    public static void bogstavHistogram(String bogstavType, String string ) {
+
+        // denne her var oprindelig en del af kaldet, da vi ellers fik index out of bounds
+        // for at gøre det lettere flyttede jeg det her ind, men man kan godt vise udgangspunktet
+        String s = findeBogstaverAfTypen(bogstavType,string);
+
+
+        int[] bogstavcount = new int[bogstavType.length()];
+
+
+
+        for (int i = 0; i < s.length(); i++) {
+
+            bogstavcount[bogstavType.indexOf(s.charAt(i))]++;
+
+        }
+
+        for (int i = 0; i < bogstavcount.length; i++) {
+            System.out.println(bogstavType.charAt(i) + " findes antal " + bogstavcount[i]);
+
+        }
+
+
+
+
+
+
+
+    }
+
+
     // er et bogstav en vokal eller en konsonant.
-    public static boolean isOfLetterType(String bogstavTyper, char c ) {
+    public static boolean erBogstavAfTypen(String bogstavTyper, char c) {
 
         StringBuilder bogstaver = new StringBuilder(bogstavTyper);
 
-        if(bogstaver.indexOf(String.valueOf(c)) > -1  ) {
+        if (bogstaver.indexOf(String.valueOf(c)) > -1) {
             return true;
         }
         return false;
     }
 
-    private static String findeLettersOfTyoe(String bogstaverType, String ord) {
+    private static String findeBogstaverAfTypen(String bogstaverType, String ord) {
 
         StringBuilder bogstaver = new StringBuilder(bogstaverType);
 
@@ -70,8 +100,7 @@ public class Main {
         for (int i = 0; i < ord.length(); i++) {
 
 //            if (bogstaver.indexOf(String.valueOf(ord.charAt(i))) > -1)
-            if (isOfLetterType(bogstaverType,ord.charAt(i)))
-            {
+            if (erBogstavAfTypen(bogstaverType, ord.charAt(i))) {
 //                System.out.println(String.valueOf(ord.charAt(i)));
                 stringBuilder.append(ord.charAt(i));
             }
@@ -83,11 +112,16 @@ public class Main {
 
 
 
+
+
+
+
+
     private static String læsFraFil(String sti) throws IOException {
-        return new String ( Files.readAllBytes( Paths.get("samplefile2.txt") ) );
+        return new String(Files.readAllBytes(Paths.get("samplefile2.txt")));
     }
 
-    private static void skriv(String indhold, String sti ) throws IOException {
+    private static void skrivTilFil(String indhold, String sti) throws IOException {
 
 
         FileWriter fileWriter = null;
@@ -101,8 +135,7 @@ public class Main {
     }
 
 
-
-    public static int maxWordIndex(String[] strings) {
+    public static int maxOrdlængde(String[] strings) {
 
         int maxLength = 0;
         int index = 0;
@@ -125,7 +158,7 @@ public class Main {
         return output;
     }
 
-    public static String changeWord(String s, String word, String nyt) {
+    public static String udskiftOrd(String s, String word, String nyt) {
 
         StringBuilder stringBuilder = new StringBuilder(s);
 
@@ -140,22 +173,24 @@ public class Main {
         return stringBuilder.toString();
     }
 
-    public static char[] changeChars(String s) {
-        char[] chars = s.toCharArray();
 
-        char[] charRes = new char[s.length()];
+    public static String udskiftOrdIStreng(String s, String oprindelig, String nyt) {
 
-        for (char c : chars) {
 
-            if (c == 'i') c = 'x';
-            ;
-
-            charRes = chars.clone();
-        }
-        return charRes;
+        return s.replaceAll(oprindelig, nyt);
     }
 
-    public static String changeChar(String s, char o, char n) {
+
+
+    public static String udskiftBogstaverSmart(String s, char opr, char nyt) {
+
+
+
+        return s.replace(opr, nyt);
+    }
+
+
+    public static String udskiftBogstav(String s, char o, char n) {
 
         StringBuilder stringBuilder = new StringBuilder(s);
 
@@ -170,7 +205,7 @@ public class Main {
         return stringBuilder.toString();
     }
 
-    public static int charCount(String s, char c) {
+    public static int TælForekomst(String s, char c) {
 
         char[] chars = s.toCharArray();
 
